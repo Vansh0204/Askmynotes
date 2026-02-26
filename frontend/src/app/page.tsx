@@ -248,17 +248,17 @@ export default function Home() {
       <motion.div
         className="absolute bottom-0 left-1/2 -translate-x-1/2 z-20"
         initial={{ opacity: 0, y: 150 }}
-        animate={{ opacity: 1, y: 60 }}
+        animate={{ opacity: 1, y: 100 }}
         transition={{ delay: 1, duration: 1.5, type: "spring", stiffness: 80 }}
       >
         <ImagesBadge
           coverImage="/bookie.png"
           text="GEOGRAPHY NOTES"
-          bookSize={{ width: 500, height: 350 }}
-          teaserImageSize={{ width: 150, height: 110 }}
-          hoverImageSize={{ width: 500, height: 350 }}
-          hoverTranslateY={-380}
-          hoverSpread={240}
+          bookSize={{ width: 440, height: 300 }}
+          teaserImageSize={{ width: 130, height: 95 }}
+          hoverImageSize={{ width: 440, height: 300 }}
+          hoverTranslateY={-300}
+          hoverSpread={200}
           onFileSelect={handleFileSelect}
         />
       </motion.div>

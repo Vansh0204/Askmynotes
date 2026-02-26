@@ -289,13 +289,15 @@ export default function BubbleMenu({
       {showOverlay && (
         <div
           ref={overlayRef}
+          onClick={handleToggle}
           className={[
             'bubble-menu-items',
             useFixedPosition ? 'fixed' : 'absolute',
             'inset-0',
             'flex items-center justify-center',
-            'pointer-events-none',
-            'z-[1000]'
+            'transition-all duration-500',
+            'z-[1000]',
+            isMenuOpen ? 'backdrop-blur-md bg-white/10 pointer-events-auto' : 'pointer-events-none'
           ].join(' ')}
           aria-hidden={!isMenuOpen}
         >
