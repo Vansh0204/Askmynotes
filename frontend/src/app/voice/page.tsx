@@ -81,8 +81,7 @@ export default function VoicePage() {
         setAiResponse("");
 
         try {
-            const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5003";
-            const response = await fetch(`${apiUrl}/api/chat`, {
+            const response = await fetch("http://localhost:5003/api/chat", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({

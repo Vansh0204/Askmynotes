@@ -59,8 +59,7 @@ export default function StudyPage() {
     useEffect(() => {
         const fetchSessions = async () => {
             try {
-                const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5003";
-                const res = await fetch(`${apiUrl}/api/chat/sessions`);
+                const res = await fetch("http://localhost:5003/api/chat/sessions");
                 if (res.ok) {
                     const data = await res.json();
                     setSessions(data);
@@ -79,8 +78,7 @@ export default function StudyPage() {
         setRevealedMcqs({});
 
         try {
-            const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5003";
-            const response = await fetch(`${apiUrl}/api/study/practice`, {
+            const response = await fetch("http://localhost:5003/api/study/practice", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
