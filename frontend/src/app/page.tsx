@@ -55,7 +55,18 @@ const NAV_ITEMS = [
   },
 ];
 
+import { useRouter } from "next/navigation";
+import { useFile } from "@/context/FileContext";
+
 export default function Home() {
+  const router = useRouter();
+  const { setSelectedFile } = useFile();
+
+  const handleFileSelect = (file: File) => {
+    setSelectedFile(file);
+    router.push("/chat");
+  };
+
   return (
     <div
       className="relative h-screen w-screen overflow-hidden flex flex-col items-center justify-center bg-white"
@@ -290,15 +301,16 @@ export default function Home() {
         <ImagesBadge
           coverImage="/bookie.png"
           images={[
+            "UPLOAD NOTE",
             "https://assets.aceternity.com/pro/agenforce-2.webp",
             "https://assets.aceternity.com/pro/minimal-3-min.webp",
-            "https://assets.aceternity.com/pro/bento-4.png",
           ]}
           bookSize={{ width: 340, height: 240 }}
           teaserImageSize={{ width: 100, height: 75 }}
           hoverImageSize={{ width: 380, height: 260 }}
           hoverTranslateY={-280}
           hoverSpread={140}
+          onFileSelect={handleFileSelect}
         />
       </motion.div>
 

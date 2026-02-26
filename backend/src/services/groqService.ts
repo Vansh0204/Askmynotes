@@ -21,14 +21,19 @@ export interface AnalysisResult {
         topic_name: string;
         subtopics: string[];
         summary: string;
+        citations: string[];
     }[];
-    key_concepts: string[];
+    key_concepts: {
+        concept: string;
+        definition: string;
+        citation: string;
+    }[];
 }
 
 export const analyzeStudyMaterial = async (input: AnalysisInput): Promise<AnalysisResult> => {
     const prompt = `
-    You are processing uploaded study material.
-
+    You are an expert academic assistant analyzing study material.
+    
     Input:
     - Subject Name: ${input.subject_name}
     - Subject Description: ${input.optional_description || "N/A"}
@@ -36,29 +41,37 @@ export const analyzeStudyMaterial = async (input: AnalysisInput): Promise<Analys
     - File Text Content: ${input.extracted_text}
 
     Tasks:
-    1. Analyze the content.
-    2. Identify major topics and subtopics.
-    3. Generate a structured topic list.
-    4. Extract key concepts and definitions.
-    5. Tag sections with possible topic labels.
-    6. Return output in structured JSON format:
-
+    1. Comprehensive Analysis: Break down the content into a logical hierarchy of topics and subtopics.
+    2. Structured Summary: For each major topic, provide a concise summary (2-3 sentences).
+    3. Precise Citations: For every topic summary and key concept, include brief verbatim "citations" from the text that support the analysis.
+    4. Key Concepts: Identify at least 5 key concepts or definitions.
+    
+    Output Format (STRICT JSON):
     {
-      "subject": "",
-      "file_name": "",
+      "subject": "${input.subject_name}",
+      "file_name": "${input.file_name}",
       "topics": [
         {
-          "topic_name": "",
-          "subtopics": [],
-          "summary": ""
+          "topic_name": "String",
+          "subtopics": ["String"],
+          "summary": "String",
+          "citations": ["String segment from text"]
         }
       ],
-      "key_concepts": []
+      "key_concepts": [
+        {
+          "concept": "String",
+          "definition": "String",
+          "citation": "String segment from text"
+        }
+      ]
     }
 
-    Do NOT answer questions.
-    Do NOT summarize the entire file.
-    Only analyze structure and topics.
+    Constraints:
+    - Do NOT answer questions.
+    - Do NOT summarize the entire file as a single block.
+    - Be extremely precise with citations—they must exist in the input text.
+    - Ensure the JSON is valid and follows the structure exactly.
   `;
 
     try {

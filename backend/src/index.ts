@@ -4,11 +4,16 @@ import dotenv from "dotenv";
 
 import authRoutes from "./routes/authRoutes";
 import uploadRoutes from "./routes/uploadRoutes";
+import multer from "multer";
+import path from "path";
 
 dotenv.config();
 
 const app: Application = express();
 const PORT = process.env.PORT || 5000;
+
+// ─── Multer Config ────────────────────────────────────────────────────────────
+const upload = multer({ dest: "uploads/" });
 
 // ─── Middleware ───────────────────────────────────────────────────────────────
 app.use(cors());

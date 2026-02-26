@@ -22,6 +22,8 @@ interface ImagesBadgeProps {
   hoverSpread?: number;
   /** Rotation angle for fanned images on hover */
   hoverRotation?: number;
+  /** Optional callback when a file is selected */
+  onFileSelect?: (file: File) => void;
 }
 
 /**
@@ -39,19 +41,42 @@ export function ImagesBadge({
   hoverTranslateY = -320,
   hoverSpread = 160,
   hoverRotation = 15,
+  onFileSelect,
 }: ImagesBadgeProps) {
   const [isHovered, setIsHovered] = useState(false);
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
   const displayImages = images.slice(0, 3);
+
+  const handleContainerClick = () => {
+    if (onFileSelect) {
+      fileInputRef.current?.click();
+    }
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file && onFileSelect) {
+      onFileSelect(file);
+    }
+  };
 
   return (
     <div
       className={cn(
-        "inline-flex cursor-pointer flex-col items-center gap-6",
+        "inline-flex cursor-pointer flex-col items-center gap-6 group",
         className
       )}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onClick={handleContainerClick}
     >
+      <input
+        type="file"
+        ref={fileInputRef}
+        onChange={handleFileChange}
+        className="hidden"
+        accept=".pdf,.txt"
+      />
       <div
         className="relative"
         style={{
@@ -109,11 +134,17 @@ export function ImagesBadge({
                 delay: index * 0.05,
               }}
             >
-              <img
-                src={image}
-                alt={`Note preview ${index + 1}`}
-                className="h-full w-full object-cover"
-              />
+              {image.startsWith('http') || image.startsWith('/') ? (
+                <img
+                  src={image}
+                  alt={`Note preview ${index + 1}`}
+                  className="h-full w-full object-cover"
+                />
+              ) : (
+                <div className="h-full w-full flex items-center justify-center bg-indigo-50 text-indigo-600 font-bold p-4 text-center">
+                  {image}
+                </div>
+              )}
               {/* Reflective overlay */}
               <div className="absolute inset-0 bg-gradient-to-tr from-white/10 to-transparent pointer-events-none" />
             </motion.div>
@@ -160,7 +191,7 @@ export function ImagesBadge({
       {/* Text label */}
       {text && (
         <span
-          className="text-2xl font-bold tracking-tight"
+          className="text-2xl font-bold tracking-tight group-hover:text-indigo-600 transition-colors"
           style={{ color: "#1a1825", fontFamily: "'DM Sans', sans-serif" }}
         >
           {text}
