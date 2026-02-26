@@ -1,73 +1,90 @@
-# AskMyNotes 📚🤖
+# 📚 AskMyNotes - AI Study Assistant
 
-**AskMyNotes** is a premium, subject-scoped study copilot designed to help students master their course material through grounded AI interactions. Built for speed and accuracy, it ensures that every answer is backed strictly by the notes you provide.
-
----
-
-## 🌟 Key Features
-
-### 🗂️ Three-Subject Setup
-Organize your studying into exactly three dedicated subjects. Upload multiple PDF or TXT files per subject to build a comprehensive knowledge base for your exams.
-
-### 🎯 Subject-Scoped Q&A
-Switch between subjects seamlessly. The AI is strictly constrained to the context of the selected subject, preventing "hallucinations" or mixing data from different courses.
-
-### 🛡️ Grounded Responses with Transparency
-Every answer provided by AskMyNotes comes with:
-- **Citations**: Specific file and section references.
-- **Confidence Levels**: High/Medium/Low indicators so you know when to double-check.
-- **Supporting Evidence**: Expandable snippets show the exact text the AI used to form its answer.
-
-### 📝 Study Mode
-Transform your notes into active learning tools:
-- **5 Custom MCQs**: Complete with correct options and detailed explanations.
-- **3 Short-Answer Questions**: Challenge yourself with model answers derived from your documents.
+AskMyNotes is a premium, AI-powered study platform where your notes come to life. Upload your PDFs, get instant structured analysis, and chat with your material using state-of-the-art Large Language Models.
 
 ---
 
-## 🎨 Premium Design
-The interface features a modern **Glassmorphism** aesthetic with:
-- Dynamic radial gradients.
-- Smooth Framer Motion animations.
-- Responsive sidebar navigation.
-- High-contrast typography for readability.
+## 🛠️ Technology Stack
+
+### **Frontend**
+- **Core Framework:** [Next.js 16](https://nextjs.org/) (App Router)
+- **Library:** [React 19](https://react.dev/)
+- **Language:** [TypeScript](https://www.typescriptlang.org/)
+- **Styling:**
+  - [Tailwind CSS 4](https://tailwindcss.com/) (Next-gen utility-first CSS)
+  - [Shadcn UI](https://ui.shadcn.com/) (Radix UI primitives)
+  - [Lucide React](https://lucide.dev/) (Icon library)
+- **Animation:** 
+  - [Motion](https://motion.dev/) (formerly Framer Motion) for smooth UI transitions and portal-based dialogs.
+  - [GSAP](https://gsap.com/) for complex scroll-triggered animations.
+- **State Management:** React Hooks (useState, useCallback, useRef) & Context API.
+
+---
+
+### **Backend**
+- **Runtime:** [Node.js](https://nodejs.org/)
+- **Framework:** [Express.js 5](https://expressjs.com/) (Latest experimental/v5)
+- **Language:** TypeScript (via `ts-node-dev`)
+- **AI Infrastructure:**
+  - **Provider:** [Groq Cloud](https://groq.com/) (LPU™ Inference Engine)
+  - **Model:** `llama-3.1-8b-instant` (Ultra-fast, high-accuracy reasoning)
+- **File Handling:**
+  - [Multer](https://github.com/expressjs/multer): Processing multipart/form-data uploads.
+  - [PDF-Parse](https://www.npmjs.com/package/pdf-parse): Server-side text extraction from PDF documents.
+- **Security & Utilities:**
+  - **JWT:** JSON Web Token for secure session management.
+  - **Bcryptjs:** Secure password hashing.
+  - **UUID:** generating unique identifiers for chat sessions.
+  - **CORS:** Cross-Origin Resource Sharing for frontend-backend communication.
+
+---
+
+### **Key Features**
+- **Multi-File Subject Management:** Upload up to 100 PDFs for a single subject; the AI maintains a cumulative context of all materials.
+- **AI-Generated Topics:** Automatically breaks down complex PDFs into structured topics, subtopics, and summaries.
+- **Live Chat with Citations:** Answers questions strictly based on your notes with verbatim citations and confidence scores.
+- **Premium UI/UX:** Glassmorphism effects, 3D book animations, and a responsive mobile-first design.
+- **Persistence:** Local JSON storage (`chats.json`) for session recovery across reloads.
 
 ---
 
 ## 🚀 Getting Started
 
 ### Prerequisites
-- [Node.js](https://nodejs.org/) (v16+)
-- [npm](https://www.npmjs.com/)
+- Node.js (v18+)
+- A Groq API Key (from [GroqCloud](https://console.groq.com/))
 
 ### Installation
-1. Clone the repository (if applicable) or navigate to the project folder.
-2. Install dependencies:
+
+1. **Clone the repository:**
    ```bash
-   npm install
+   git clone https://github.com/Vansh0204/Askmynotes-Mavericks.git
    ```
 
-### Running Locally
-Start the development server:
-```bash
-npm run dev
-```
-Open the provided URL (typically `http://localhost:5173` or `5174`) in your browser.
+2. **Setup Backend:**
+   ```bash
+   cd backend
+   cp .env.example .env
+   # Add your GROQ_API_KEY to .env
+   npm install
+   npm run dev
+   ```
+
+3. **Setup Frontend:**
+   ```bash
+   cd ../frontend
+   cp .env.example .env.local
+   npm install
+   npm run dev
+   ```
+
+4. **Access the App:** 
+   Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
-## 🛠️ Tech Stack
-- **Frontend**: React (Vite)
-- **3D Graphics**: Spline (@splinetool/react-spline)
-- **Animation**: Framer Motion
-- **Icons**: Lucide-React
-- **PDF Extraction**: PDF.js (pdfjs-dist)
-- **Logic**: Subject-Scoped RAG Implementation (Simulated LLM for Demo)
-
----
-
-## 🛡️ "Not Found" Policy
-If the uploaded notes do not contain the answer, the system will respond with:
-> *"Not found in your notes for [Subject]"*
-
-No guessing. No fabrication. Just the facts.
+## 📁 Project Structure
+- `/frontend`: Next.js web application.
+- `/backend`: Express.js API server.
+- `/backend/src/services`: Core logic for AI analysis and chat.
+- `/backend/src/controllers`: Request handlers for uploads and sessions.

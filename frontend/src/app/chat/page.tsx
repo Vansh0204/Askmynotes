@@ -189,7 +189,7 @@ export default function ChatPage() {
             setMessagesBySession(prev => ({
                 ...prev,
                 [activeSession.id]: [...(prev[activeSession.id] || []), {
-                    id: "error",
+                    id: `error-${Date.now()}`,
                     role: "assistant",
                     content: "I'm having trouble connecting to my knowledge base right now."
                 }]

@@ -82,7 +82,7 @@ export const analyzeStudyMaterial = async (input: AnalysisInput): Promise<Analys
                     content: prompt,
                 },
             ],
-            model: "llama-3-8b-8192",
+            model: "llama-3.1-8b-instant",
             response_format: { type: "json_object" },
         });
 
@@ -142,7 +142,7 @@ export const chatWithMaterial = async (input: ChatInput): Promise<ChatResult> =>
                 ...input.history,
                 { role: "user", content: input.question },
             ],
-            model: "llama-3-8b-8192",
+            model: "llama-3.1-8b-instant",
             response_format: { type: "json_object" },
         });
 
@@ -227,7 +227,7 @@ export const generatePracticeQuestions = async (input: PracticeInput): Promise<P
     try {
         const chatCompletion = await groq.chat.completions.create({
             messages: [{ role: "user", content: prompt }],
-            model: "llama-3-8b-8192",
+            model: "llama-3.1-8b-instant",
             response_format: { type: "json_object" },
         });
 
