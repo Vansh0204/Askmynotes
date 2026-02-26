@@ -2,7 +2,6 @@
 
 import React from "react";
 import { motion } from "motion/react";
-import Link from "next/link";
 import BubbleMenu from "@/components/BubbleMenu";
 import {
   DoodlePencil,
@@ -33,6 +32,13 @@ const NAV_ITEMS = [
     hoverStyles: { bgColor: COLORS.blue, textColor: "#ffffff" },
   },
   {
+    label: "Voice",
+    href: "/voice",
+    ariaLabel: "Voice",
+    rotation: 4,
+    hoverStyles: { bgColor: COLORS.red, textColor: "#ffffff" },
+  },
+  {
     label: "Chat",
     href: "/chat",
     ariaLabel: "Chat",
@@ -40,18 +46,11 @@ const NAV_ITEMS = [
     hoverStyles: { bgColor: COLORS.purple, textColor: "#ffffff" },
   },
   {
-    label: "About",
-    href: "#",
-    ariaLabel: "About",
+    label: "Study",
+    href: "/study",
+    ariaLabel: "Study",
     rotation: -4,
     hoverStyles: { bgColor: COLORS.pink, textColor: "#ffffff" },
-  },
-  {
-    label: "GitHub",
-    href: "https://github.com",
-    ariaLabel: "GitHub",
-    rotation: 8,
-    hoverStyles: { bgColor: COLORS.green, textColor: "#ffffff" },
   },
 ];
 
@@ -96,25 +95,8 @@ export default function Home() {
         useFixedPosition={true}
       />
       {/* ===== CORNER METADATA (Portfolio Style) ===== */}
-      <div className="absolute top-8 left-8 text-[10px] font-bold tracking-widest uppercase text-red-500">
-        ASKMYNOTES // KNOWLEDGE BASE
-      </div>
-      <div className="absolute top-8 left-1/2 -translate-x-1/2 text-[10px] font-bold tracking-widest uppercase text-red-500 text-center leading-tight">
-        THIS BASE WAS MADE WITH A LOT OF<br />
-        CREATIVITY AND <span className="inline-block border border-red-500 rounded-full px-2">LOVE</span>
-      </div>
-      <div className="absolute top-8 right-8 text-[10px] font-bold tracking-widest uppercase text-red-500">
-        2025 // v1.0
-      </div>
-
-      <div className="absolute bottom-6 left-8 text-[10px] font-medium tracking-tight text-red-500">
-        askmynotes.ai/beta1
-      </div>
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-[10px] font-medium tracking-tight text-red-500">
-        hello@askmynotes.ai
-      </div>
-      <div className="absolute bottom-6 right-8 text-[10px] font-medium tracking-tight text-red-500">
-        @askmynotes.jpg
+      <div className="absolute top-8 left-8 text-[10px] font-bold tracking-widest uppercase text-black/20">
+        AI STUDY ASSISTANT // BETA 1.0
       </div>
 
       {/* ===== GEOMETRIC SHAPES (Maximalist Accents) ===== */}
@@ -260,56 +242,23 @@ export default function Home() {
           The ultimate space where your notes become interactive. Upload, query, and visualize with AI.
         </motion.p>
 
-        {/* CTA Buttons */}
-        <motion.div
-          className="flex gap-4 mt-8"
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 2.0, duration: 0.5 }}
-        >
-          <Link
-            href="/chat"
-            className="rounded-2xl px-8 py-3.5 text-sm font-bold text-white shadow-xl transition-all duration-300 hover:scale-105 hover:shadow-indigo-500/20 active:scale-95 flex items-center justify-center whitespace-nowrap"
-            style={{
-              background: "linear-gradient(135deg, #ef4444, #f43f5e)",
-              fontFamily: "'DM Sans', sans-serif",
-            }}
-          >
-            Get Started
-          </Link>
-          <button
-            className="rounded-2xl px-8 py-3.5 text-sm font-bold transition-all duration-300 hover:scale-105 active:scale-95 whitespace-nowrap"
-            style={{
-              border: "2px solid rgba(239, 68, 68, 0.1)",
-              color: "#ef4444",
-              background: "rgba(255,255,255,0.4)",
-              fontFamily: "'DM Sans', sans-serif",
-            }}
-          >
-            The Gallery
-          </button>
-        </motion.div>
       </div>
 
       {/* ===== BOOK AT BOTTOM CENTER ===== */}
       <motion.div
         className="absolute bottom-0 left-1/2 -translate-x-1/2 z-20"
-        initial={{ opacity: 0, y: 100 }}
-        animate={{ opacity: 1, y: 20 }}
-        transition={{ delay: 2, duration: 1, type: "spring", stiffness: 100 }}
+        initial={{ opacity: 0, y: 150 }}
+        animate={{ opacity: 1, y: 60 }}
+        transition={{ delay: 1, duration: 1.5, type: "spring", stiffness: 80 }}
       >
         <ImagesBadge
           coverImage="/bookie.png"
-          images={[
-            "UPLOAD NOTE",
-            "https://assets.aceternity.com/pro/agenforce-2.webp",
-            "https://assets.aceternity.com/pro/minimal-3-min.webp",
-          ]}
-          bookSize={{ width: 340, height: 240 }}
-          teaserImageSize={{ width: 100, height: 75 }}
-          hoverImageSize={{ width: 380, height: 260 }}
-          hoverTranslateY={-280}
-          hoverSpread={140}
+          text="GEOGRAPHY NOTES"
+          bookSize={{ width: 500, height: 350 }}
+          teaserImageSize={{ width: 150, height: 110 }}
+          hoverImageSize={{ width: 500, height: 350 }}
+          hoverTranslateY={-380}
+          hoverSpread={240}
           onFileSelect={handleFileSelect}
         />
       </motion.div>

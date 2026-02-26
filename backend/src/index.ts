@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 
 import authRoutes from "./routes/authRoutes";
 import uploadRoutes from "./routes/uploadRoutes";
+import chatRoutes from "./routes/chatRoutes";
 import multer from "multer";
 import path from "path";
 
@@ -34,6 +35,13 @@ app.use("/api/auth", authRoutes);
 
 // Upload & Analysis routes
 app.use("/api/upload", uploadRoutes);
+
+// Chat routes
+app.use("/api/chat", chatRoutes);
+
+// Study routes
+import studyRoutes from "./routes/studyRoutes";
+app.use("/api/study", studyRoutes);
 
 // ─── Start ────────────────────────────────────────────────────────────────────
 app.listen(PORT, () => {
