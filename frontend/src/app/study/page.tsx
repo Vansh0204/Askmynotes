@@ -4,6 +4,23 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import {
+    DoodlePencil,
+    DoodleStar,
+    DoodlePaperPlane,
+    DoodleNotebook,
+    DoodleLightbulb,
+} from "@/components/ui/doodle-elements";
+
+const COLORS = {
+    red: "#ef4444",
+    blue: "#3b82f6",
+    yellow: "#fbbf24",
+    pink: "#f472b6",
+    green: "#10b981",
+    purple: "#8b5cf6",
+    black: "#1a1825",
+};
 
 interface ChatSession {
     id: string;
@@ -94,7 +111,16 @@ export default function StudyPage() {
     };
 
     return (
-        <div className="min-h-screen bg-[#fafafa] font-['DM_Sans'] text-[#1a1825] pb-20">
+        <div className="min-h-screen bg-[#fafafa] text-[#1a1825] pb-20 relative overflow-hidden">
+            {/* Background Doodles and Shapes */}
+            <div className="absolute inset-0 pointer-events-none overflow-hidden z-0 opacity-[0.03]">
+                <div className="absolute top-20 left-10 rotate-12"><DoodleNotebook color={COLORS.blue} /></div>
+                <div className="absolute bottom-20 left-40 -rotate-12"><DoodleStar color={COLORS.yellow} /></div>
+                <div className="absolute top-1/2 right-20 rotate-45"><DoodlePaperPlane color={COLORS.pink} /></div>
+                <div className="absolute top-40 right-1/4 -rotate-12"><DoodleLightbulb color={COLORS.purple} /></div>
+                <div className="absolute bottom-10 right-10 rotate-12"><DoodlePencil color={COLORS.red} /></div>
+            </div>
+
             {/* Header */}
             <header className="h-20 bg-white border-b border-black/5 flex items-center justify-between px-10 sticky top-0 z-50 backdrop-blur-md">
                 <div className="flex items-center gap-6">
