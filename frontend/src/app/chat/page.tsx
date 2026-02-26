@@ -4,6 +4,23 @@ import React, { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import {
+    DoodlePencil,
+    DoodleStar,
+    DoodlePaperPlane,
+    DoodleNotebook,
+    DoodleLightbulb,
+} from "@/components/ui/doodle-elements";
+
+const COLORS = {
+    red: "#ef4444",
+    blue: "#3b82f6",
+    yellow: "#fbbf24",
+    pink: "#f472b6",
+    green: "#10b981",
+    purple: "#8b5cf6",
+    black: "#1a1825",
+};
 
 interface ChatSession {
     id: string;
@@ -226,9 +243,18 @@ export default function ChatPage() {
     };
 
     return (
-        <div className="flex h-screen bg-[#fafafa] overflow-hidden font-['DM_Sans']">
+        <div className="flex h-screen bg-[#fafafa] overflow-hidden relative">
+            {/* Background Doodles and Shapes */}
+            <div className="absolute inset-0 pointer-events-none overflow-hidden z-0 opacity-[0.03]">
+                <div className="absolute top-20 left-10 rotate-12"><DoodleNotebook color={COLORS.blue} /></div>
+                <div className="absolute bottom-20 left-40 -rotate-12"><DoodleStar color={COLORS.yellow} /></div>
+                <div className="absolute top-1/2 right-20 rotate-45"><DoodlePaperPlane color={COLORS.pink} /></div>
+                <div className="absolute top-40 right-1/4 -rotate-12"><DoodleLightbulb color={COLORS.purple} /></div>
+                <div className="absolute bottom-10 right-10 rotate-12"><DoodlePencil color={COLORS.red} /></div>
+            </div>
+
             {/* DASHBOARD SIDEBAR */}
-            <div className="w-80 bg-white border-r border-black/5 flex flex-col hidden lg:flex">
+            <div className="w-80 bg-white border-r border-black/5 flex flex-col hidden lg:flex relative z-10 shadow-xl shadow-black/[0.02]">
                 <div className="p-8 pb-4">
                     <Link href="/" className="flex items-center gap-3 mb-10 group">
                         <div className="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center text-white font-bold group-hover:scale-110 transition-transform">
