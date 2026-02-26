@@ -58,6 +58,7 @@ Open the provided URL (typically `http://localhost:5173` or `5174`) in your brow
 
 ## 🛠️ Tech Stack
 - **Frontend**: React (Vite)
+- **3D Graphics**: Spline (@splinetool/react-spline)
 - **Animation**: Framer Motion
 - **Icons**: Lucide-React
 - **PDF Extraction**: PDF.js (pdfjs-dist)
