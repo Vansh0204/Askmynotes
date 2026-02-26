@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 
 import authRoutes from "./routes/authRoutes";
+import uploadRoutes from "./routes/uploadRoutes";
 
 dotenv.config();
 
@@ -25,6 +26,9 @@ app.get("/health", (_req: Request, res: Response) => {
 
 // Auth routes — /api/auth/signup  /api/auth/login  /api/auth/me
 app.use("/api/auth", authRoutes);
+
+// Upload & Analysis routes
+app.use("/api/upload", uploadRoutes);
 
 // ─── Start ────────────────────────────────────────────────────────────────────
 app.listen(PORT, () => {
