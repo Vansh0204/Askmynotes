@@ -1,12 +1,12 @@
 "use client";
-import { ImagesBadge } from "@/components/ui/images-badge";
+import { NotesVisualizer } from "@/components/ui/images-badge";
 
 export default function ImagesBadgeDemoTwo() {
     return (
         <div className="flex w-full items-center justify-center">
-            <ImagesBadge
+            <NotesVisualizer
                 text="Your Notes, Visualized"
-                images={[
+                visualImages={[
                     "https://assets.aceternity.com/pro/agenforce-2.webp",
                     "https://assets.aceternity.com/pro/minimal-3-min.webp",
                     "https://assets.aceternity.com/pro/bento-4.png",

@@ -6,7 +6,7 @@ import Image from "next/image";
 import { createPortal } from "react-dom";
 import { cn } from "@/lib/utils";
 
-interface ImagesBadgeProps {
+interface NotesVisualizerProps {
   text?: string;
   className?: string;
   /** Book image path (e.g., bookie.png) */
@@ -26,11 +26,11 @@ interface ImagesBadgeProps {
   /** Optional callback when a file is selected */
   onFileSelect?: (file: File) => void;
   /** Optional array of image URLs to display */
-  images?: string[];
+  visualImages?: string[];
 }
 
 /**
- * ImagesBadge - A component that displays a 3D book image and fans out images on hover.
+ * NotesVisualizer - A component that displays a 3D book image and fans out images on hover.
  */
 interface SlotState {
   file: File | null;
@@ -39,7 +39,7 @@ interface SlotState {
   citations: string[];
 }
 
-export function ImagesBadge({
+export function NotesVisualizer({
   text,
   className,
   coverImage = "/bookie.png",
@@ -50,8 +50,8 @@ export function ImagesBadge({
   hoverSpread = 200,
   hoverRotation = 20,
   onFileSelect,
-  images = [],
-}: ImagesBadgeProps) {
+  visualImages = [],
+}: NotesVisualizerProps) {
   const [isHovered, setIsHovered] = useState(false);
   const [hoveredSlot, setHoveredSlot] = useState<number | null>(null);
   const [showForm, setShowForm] = useState(false);
@@ -284,10 +284,10 @@ export function ImagesBadge({
               >
                 {/* Slot Content */}
                 <div className="relative h-full w-full flex flex-col items-center justify-center p-6 bg-gradient-to-b from-indigo-50/50 to-white overflow-hidden">
-                  {images[index] && (
+                  {visualImages[index] && (
                     <div
                       className="absolute inset-0 z-0 bg-cover bg-center opacity-40 group-hover/slot:opacity-60 transition-opacity"
-                      style={{ backgroundImage: `url(${images[index]})` }}
+                      style={{ backgroundImage: `url(${visualImages[index]})` }}
                     />
                   )}
                   <div className="relative z-10 w-full h-full flex flex-col items-center justify-center text-center">

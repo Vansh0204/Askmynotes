@@ -11,7 +11,7 @@ import {
   DoodleNotebook,
   DoodleLightbulb,
 } from "@/components/ui/doodle-elements";
-import { ImagesBadge } from "@/components/ui/images-badge";
+import { NotesVisualizer } from "@/components/ui/images-badge";
 import { SmoothCursor } from "@/components/ui/smooth-cursor"
 
 const COLORS = {
@@ -274,7 +274,7 @@ export default function Home() {
           <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-white rotate-45 border-r border-b border-black/5" />
         </motion.div>
 
-        <ImagesBadge
+        <NotesVisualizer
           coverImage="/bookie.png"
           text="GEOGRAPHY NOTES"
           bookSize={{ width: 440, height: 300 }}
