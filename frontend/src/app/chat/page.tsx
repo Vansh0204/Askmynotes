@@ -11,6 +11,7 @@ import {
     DoodleNotebook,
     DoodleLightbulb,
 } from "@/components/ui/doodle-elements";
+import { SmoothCursor } from "@/components/ui/smooth-cursor"
 
 const COLORS = {
     red: "#ef4444",
@@ -252,6 +253,7 @@ export default function ChatPage() {
 
     return (
         <div className="flex h-screen bg-[#fafafa] overflow-hidden relative">
+            <SmoothCursor />
             {/* Background Doodles and Shapes */}
             <div className="absolute inset-0 pointer-events-none overflow-hidden z-0 opacity-[0.03]">
                 <div className="absolute top-20 left-10 rotate-12"><DoodleNotebook color={COLORS.blue} /></div>
@@ -365,7 +367,12 @@ export default function ChatPage() {
                             </div>
                         </header>
 
-                        <div className="flex-1 overflow-y-auto p-10 space-y-8 scroll-smooth">
+                        <div className="flex-1 overflow-y-auto p-10 space-y-8 scroll-smooth relative">
+                            {/* Suble Ambient Background for Chat Area */}
+                            <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden opacity-50">
+                                <div className="absolute top-[-10%] right-[-10%] w-[60%] h-[60%] bg-[#f0f2ff] rounded-full blur-[100px]" />
+                                <div className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] bg-[#fff0f5] rounded-full blur-[100px]" />
+                            </div>
                             <AnimatePresence mode="popLayout">
                                 {activeMessages.map((m) => (
                                     <motion.div

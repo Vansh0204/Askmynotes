@@ -11,6 +11,7 @@ import {
     DoodleNotebook,
     DoodleLightbulb,
 } from "@/components/ui/doodle-elements";
+import { SmoothCursor } from "@/components/ui/smooth-cursor"
 
 const COLORS = {
     red: "#ef4444",
@@ -111,29 +112,44 @@ export default function StudyPage() {
     };
 
     return (
-        <div className="min-h-screen bg-[#fafafa] text-[#1a1825] pb-20 relative overflow-hidden">
+        <div className="min-h-screen bg-[#fafafa] text-[#1a1825] pb-20 relative overflow-hidden" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <SmoothCursor />
+
+            {/* Ambient Background Glows */}
+            <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden opacity-40">
+                <div className="absolute top-[-10%] left-[-5%] w-[40%] h-[40%] bg-indigo-100 rounded-full blur-[120px]" />
+                <div className="absolute top-[20%] right-[-10%] w-[35%] h-[35%] bg-purple-50 rounded-full blur-[100px]" />
+                <div className="absolute bottom-[-10%] left-[20%] w-[50%] h-[50%] bg-blue-50/50 rounded-full blur-[150px]" />
+            </div>
+
             {/* Background Doodles and Shapes */}
             <div className="absolute inset-0 pointer-events-none overflow-hidden z-0 opacity-[0.03]">
-                <div className="absolute top-20 left-10 rotate-12"><DoodleNotebook color={COLORS.blue} /></div>
+                <div className="absolute top-40 left-10 rotate-12"><DoodleNotebook color={COLORS.blue} /></div>
                 <div className="absolute bottom-20 left-40 -rotate-12"><DoodleStar color={COLORS.yellow} /></div>
                 <div className="absolute top-1/2 right-20 rotate-45"><DoodlePaperPlane color={COLORS.pink} /></div>
-                <div className="absolute top-40 right-1/4 -rotate-12"><DoodleLightbulb color={COLORS.purple} /></div>
+                <div className="absolute top-[15%] right-1/4 -rotate-12"><DoodleLightbulb color={COLORS.purple} /></div>
                 <div className="absolute bottom-10 right-10 rotate-12"><DoodlePencil color={COLORS.red} /></div>
             </div>
 
             {/* Header */}
-            <header className="h-20 bg-white border-b border-black/5 flex items-center justify-between px-10 sticky top-0 z-50 backdrop-blur-md">
+            <header className="h-20 bg-white/70 border-b border-black/5 flex items-center justify-between px-10 sticky top-0 z-50 backdrop-blur-xl transition-all">
                 <div className="flex items-center gap-6">
                     <Link href="/" className="flex items-center gap-3 group">
-                        <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-bold group-hover:scale-110 transition-transform">
-                            AMN
+                        <div className="w-9 h-9 rounded-xl bg-black flex items-center justify-center text-white font-bold group-hover:bg-indigo-600 transition-colors shadow-lg shadow-black/10">
+                            <span style={{ fontFamily: "'DotGothic16', sans-serif" }}>A</span>
                         </div>
                     </Link>
                     <div className="h-6 w-[1px] bg-black/10" />
-                    <h1 className="font-extrabold text-xl tracking-tight leading-none">Practice Mode</h1>
+                    <div className="flex flex-col">
+                        <h1 className="font-extrabold text-sm tracking-tight leading-none text-[#1a1825]">STUDY ROOM</h1>
+                        <p className="text-[9px] font-black uppercase tracking-[0.3em] text-indigo-600 mt-1 opacity-60">Session Management</p>
+                    </div>
                 </div>
-                <div className="flex items-center gap-4">
-                    <Link href="/chat" className="text-xs font-bold uppercase tracking-widest opacity-40 hover:opacity-100 transition-opacity">Back to Chat</Link>
+                <div className="flex items-center gap-6">
+                    <Link href="/chat" className="text-[10px] font-black uppercase tracking-[0.2em] text-black/40 hover:text-indigo-600 hover:opacity-100 transition-all flex items-center gap-2">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M15 18l-6-6 6-6" /></svg>
+                        Back to Chat
+                    </Link>
                 </div>
             </header>
 
