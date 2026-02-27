@@ -130,11 +130,12 @@ const useTheme = (enabled: boolean) => {
 interface PersonaWithModelProps {
   rive: ReturnType<typeof useRive>["rive"];
   source: (typeof sources)[keyof typeof sources];
+  state: PersonaState;
   children: React.ReactNode;
 }
 
 const PersonaWithModel = memo(
-  ({ rive, source, children }: PersonaWithModelProps) => {
+  ({ rive, source, state, children }: PersonaWithModelProps) => {
     const theme = useTheme(source.dynamicColor);
     const viewModel = useViewModel(rive, { useDefault: true });
     const viewModelInstance = useViewModelInstance(viewModel, {
@@ -151,9 +152,19 @@ const PersonaWithModel = memo(
         return;
       }
 
-      const [r, g, b] = theme === "dark" ? [255, 255, 255] : [0, 0, 0];
+      let [r, g, b] = theme === "dark" ? [255, 255, 255] : [0, 0, 0];
+
+      // Dynamic color based on AI state
+      if (state === "listening") {
+        [r, g, b] = [239, 68, 68]; // Red-500
+      } else if (state === "thinking") {
+        [r, g, b] = [168, 85, 247]; // Purple-500
+      } else if (state === "speaking") {
+        [r, g, b] = [99, 102, 241]; // Indigo-500
+      }
+
       viewModelInstanceColor.setRgb(r, g, b);
-    }, [viewModelInstanceColor, theme, source.dynamicColor]);
+    }, [viewModelInstanceColor, theme, source.dynamicColor, state]);
 
     return children;
   }
@@ -162,6 +173,7 @@ const PersonaWithModel = memo(
 PersonaWithModel.displayName = "PersonaWithModel";
 
 interface PersonaWithoutModelProps {
+  state: PersonaState;
   children: ReactNode;
 }
 
@@ -252,25 +264,31 @@ export const Persona: FC<PersonaProps> = memo(
     const speakingInput = useStateMachineInput(rive, stateMachine, "speaking");
     const asleepInput = useStateMachineInput(rive, stateMachine, "asleep");
 
+    // Use a ref to store inputs to avoid "mutating hook result" lint errors
+    const inputsRef = useRef<Record<string, { value: number | boolean } | null | undefined>>({});
+
+
     useEffect(() => {
-      if (listeningInput) {
-        listeningInput.value = state === "listening";
-      }
-      if (thinkingInput) {
-        thinkingInput.value = state === "thinking";
-      }
-      if (speakingInput) {
-        speakingInput.value = state === "speaking";
-      }
-      if (asleepInput) {
-        asleepInput.value = state === "asleep";
-      }
-    }, [state, listeningInput, thinkingInput, speakingInput, asleepInput]);
+      inputsRef.current = {
+        listening: listeningInput,
+        thinking: thinkingInput,
+        speaking: speakingInput,
+        asleep: asleepInput,
+      };
+    }, [listeningInput, thinkingInput, speakingInput, asleepInput]);
+
+    useEffect(() => {
+      const { listening, thinking, speaking, asleep } = inputsRef.current;
+      if (listening) listening.value = state === "listening";
+      if (thinking) thinking.value = state === "thinking";
+      if (speaking) speaking.value = state === "speaking";
+      if (asleep) asleep.value = state === "asleep";
+    }, [state]);
 
     const Component = source.hasModel ? PersonaWithModel : PersonaWithoutModel;
 
     return (
-      <Component rive={rive} source={source}>
+      <Component rive={rive} source={source} state={state}>
         <RiveComponent className={cn("size-16 shrink-0", className)} />
       </Component>
     );

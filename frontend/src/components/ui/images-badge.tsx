@@ -48,7 +48,7 @@ export function ImagesBadge({
   hoverSpread = 200,
   hoverRotation = 20,
   onFileSelect,
-}: Omit<ImagesBadgeProps, 'images'>) {
+}: ImagesBadgeProps) {
   const [isHovered, setIsHovered] = useState(false);
   const [hoveredSlot, setHoveredSlot] = useState<number | null>(null);
   const [showForm, setShowForm] = useState(false);
