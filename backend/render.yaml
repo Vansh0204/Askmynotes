@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: ask-my-notes-backend
+    env: node
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: PORT
+        value: 10000
+      - key: GROQ_API_KEY
+        sync: false
+      - key: MONGODB_URI
+        sync: false # User will provide their MongoDB Atlas URI
+      - key: NODE_ENV
+        value: production
+    # Important: Since we use local file storage (chats.json), 
+    # data will be lost on restarts on Render's free tier.
+    # To persist data, move to a database or use Render persistent disks.

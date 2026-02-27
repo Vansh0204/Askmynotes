@@ -7,8 +7,12 @@ import uploadRoutes from "./routes/uploadRoutes";
 import chatRoutes from "./routes/chatRoutes";
 import multer from "multer";
 import path from "path";
+import connectDB from "./config/db";
 
 dotenv.config();
+
+// Connect to MongoDB
+connectDB();
 
 const app: Application = express();
 const PORT = process.env.PORT || 5000;

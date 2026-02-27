@@ -101,7 +101,7 @@ export function ImagesBadge({
 
       try {
         const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5003";
-        const response = await fetch(`${apiUrl}/api/upload`, {
+        const response = await fetch(`${apiUrl}/api/upload/notes`, {
           method: "POST",
           body: formData,
         });

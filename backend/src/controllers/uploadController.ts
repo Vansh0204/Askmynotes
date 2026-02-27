@@ -14,9 +14,10 @@ export const uploadStudyMaterial = async (req: Request, res: Response) => {
             return;
         }
 
-        const existingChat = chatStore.getChatBySubject(subject_name);
+        const existingChat = await chatStore.getChatBySubject(subject_name);
+        const currentChats = await chatStore.getChats();
 
-        if (!existingChat && chatStore.getChats().length >= 3) {
+        if (!existingChat && currentChats.length >= 3) {
             res.status(400).json({ error: "Maximum of 3 unique subjects allowed. Please update an existing subject or delete one." });
             return;
         }
@@ -76,7 +77,7 @@ export const uploadStudyMaterial = async (req: Request, res: Response) => {
             existingChat.key_concepts.forEach(c => conceptMap.set(c.concept.toLowerCase(), c));
             newAnalysisResult.key_concepts.forEach(c => conceptMap.set(c.concept.toLowerCase(), c));
 
-            result = chatStore.updateChat(existingChat.id, {
+            result = await chatStore.updateChat(existingChat.id, {
                 topics: Array.from(topicMap.values()).slice(-15), // Keep a reasonable count
                 key_concepts: Array.from(conceptMap.values()).slice(-15),
                 extracted_text: combinedText,
@@ -85,7 +86,7 @@ export const uploadStudyMaterial = async (req: Request, res: Response) => {
             });
         } else {
             // Store new subject
-            result = chatStore.addChat({
+            result = await chatStore.addChat({
                 ...newAnalysisResult,
                 description: optional_description || "",
                 extracted_text: extractedText,

@@ -1,18 +1,12 @@
 import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { v4 as uuidv4 } from "uuid";
-import {
-    createUser,
-    findUserByEmail,
-    findUserById,
-} from "../models/userStore";
+import User from "../models/User";
 
 const JWT_SECRET = process.env.JWT_SECRET || "supersecret_change_in_prod";
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || "7d";
 
 // ─── helpers ──────────────────────────────────────────────────────────────────
-// jwt v9 uses a branded "StringValue" type for expiresIn — cast is safe.
 const generateToken = (userId: string) =>
     jwt.sign({ id: userId }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN as any });
 
@@ -21,7 +15,6 @@ export const signup = async (req: Request, res: Response): Promise<void> => {
     try {
         const { name, email, password } = req.body;
 
-        // Basic validation
         if (!name || !email || !password) {
             res.status(400).json({ success: false, message: "All fields are required." });
             return;
@@ -31,29 +24,29 @@ export const signup = async (req: Request, res: Response): Promise<void> => {
             return;
         }
 
-        // Check duplicate email
-        if (findUserByEmail(email)) {
+        const existingUser = await User.findOne({ email: email.toLowerCase() });
+        if (existingUser) {
             res.status(409).json({ success: false, message: "Email already in use." });
             return;
         }
 
         const passwordHash = await bcrypt.hash(password, 12);
 
-        const newUser = createUser({
-            id: uuidv4(),
+        const newUser = new User({
             name,
-            email,
+            email: email.toLowerCase(),
             passwordHash,
-            createdAt: new Date(),
         });
 
-        const token = generateToken(newUser.id);
+        await newUser.save();
+
+        const token = generateToken(newUser._id.toString());
 
         res.status(201).json({
             success: true,
             message: "Account created successfully.",
             token,
-            user: { id: newUser.id, name: newUser.name, email: newUser.email },
+            user: { id: newUser._id.toString(), name: newUser.name, email: newUser.email },
         });
     } catch (err) {
         console.error("Signup error:", err);
@@ -71,7 +64,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
             return;
         }
 
-        const user = findUserByEmail(email);
+        const user = await User.findOne({ email: email.toLowerCase() });
         if (!user) {
             res.status(401).json({ success: false, message: "Invalid credentials." });
             return;
@@ -83,13 +76,13 @@ export const login = async (req: Request, res: Response): Promise<void> => {
             return;
         }
 
-        const token = generateToken(user.id);
+        const token = generateToken(user._id.toString());
 
         res.status(200).json({
             success: true,
             message: "Logged in successfully.",
             token,
-            user: { id: user.id, name: user.name, email: user.email },
+            user: { id: user._id.toString(), name: user.name, email: user.email },
         });
     } catch (err) {
         console.error("Login error:", err);
@@ -101,7 +94,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
 export const getMe = async (req: Request, res: Response): Promise<void> => {
     try {
         const payload = req.user as { id: string };
-        const user = findUserById(payload.id);
+        const user = await User.findById(payload.id);
 
         if (!user) {
             res.status(404).json({ success: false, message: "User not found." });
@@ -110,7 +103,7 @@ export const getMe = async (req: Request, res: Response): Promise<void> => {
 
         res.status(200).json({
             success: true,
-            user: { id: user.id, name: user.name, email: user.email, createdAt: user.createdAt },
+            user: { id: user._id.toString(), name: user.name, email: user.email, createdAt: user.createdAt },
         });
     } catch (err) {
         console.error("GetMe error:", err);

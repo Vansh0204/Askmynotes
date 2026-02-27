@@ -12,7 +12,7 @@ export const chatWithStudyMaterial = async (req: Request, res: Response) => {
         }
 
         // Always fetch the latest content from the store to ensure cumulative uploads are included
-        const session = chatStore.getChatBySubject(subject_name);
+        const session = await chatStore.getChatBySubject(subject_name);
         const finalExtractedText = session ? session.extracted_text : providedText;
 
         if (!finalExtractedText) {
