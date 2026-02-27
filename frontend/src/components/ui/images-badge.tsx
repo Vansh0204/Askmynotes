@@ -25,6 +25,8 @@ interface ImagesBadgeProps {
   hoverRotation?: number;
   /** Optional callback when a file is selected */
   onFileSelect?: (file: File) => void;
+  /** Optional array of image URLs to display */
+  images?: string[];
 }
 
 /**
@@ -48,6 +50,7 @@ export function ImagesBadge({
   hoverSpread = 200,
   hoverRotation = 20,
   onFileSelect,
+  images = [],
 }: ImagesBadgeProps) {
   const [isHovered, setIsHovered] = useState(false);
   const [hoveredSlot, setHoveredSlot] = useState<number | null>(null);
@@ -281,69 +284,77 @@ export function ImagesBadge({
               >
                 {/* Slot Content */}
                 <div className="relative h-full w-full flex flex-col items-center justify-center p-6 bg-gradient-to-b from-indigo-50/50 to-white overflow-hidden">
-                  {slot.file ? (
-                    <div className="flex flex-col items-center gap-4 text-center">
-                      <div className="w-16 h-20 bg-indigo-600 rounded-lg flex items-center justify-center text-white shadow-lg">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                          <polyline points="14 2 14 8 20 8" />
-                        </svg>
-                      </div>
-                      <div>
-                        <p className="font-bold text-indigo-900 truncate max-w-[200px]">{slot.subject || slot.file?.name}</p>
-                        <p className="text-[10px] text-indigo-400 font-bold uppercase tracking-wider">{slot.subject ? "Subject Active" : "Note Active"}</p>
-                        {slot.subject && <p className="text-[8px] text-black/20 mt-1 truncate max-w-[150px]">Latest: {slot.file?.name}</p>}
-                      </div>
-
-                      {/* Citations Animation */}
-                      <AnimatePresence>
-                        {slot.citations.map((cite, cIdx) => (
-                          <motion.div
-                            key={`${index}-${cIdx}`}
-                            initial={{ opacity: 0, scale: 0, x: 0, y: 0 }}
-                            animate={{
-                              opacity: [0, 1, 1, 0],
-                              scale: [0.5, 1, 1, 0.8],
-                              x: (Math.random() - 0.5) * 300,
-                              y: -100 - Math.random() * 200,
-                            }}
-                            transition={{
-                              duration: 4,
-                              delay: cIdx * 0.5,
-                              repeat: Infinity,
-                              repeatDelay: 1
-                            }}
-                            className="absolute pointer-events-none bg-white p-3 rounded-xl border border-indigo-100 shadow-2xl text-[10px] font-medium text-indigo-700 max-w-[150px] leading-tight z-50 text-left"
-                          >
-                            <span className="block mb-1 text-red-500 font-bold tracking-widest text-[8px]">CITATION</span>
-                            &ldquo;{cite.length > 60 ? cite.substring(0, 60) + "..." : cite}&rdquo;
-                          </motion.div>
-                        ))}
-                      </AnimatePresence>
-                    </div>
-                  ) : (
-                    <div className="flex flex-col items-center gap-4 group-hover/slot:scale-110 transition-transform">
-                      <div className="w-16 h-16 rounded-2xl bg-indigo-50 border-2 border-dashed border-indigo-200 flex items-center justify-center text-indigo-300">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                          <line x1="12" y1="5" x2="12" y2="19" />
-                          <line x1="5" y1="12" x2="19" y2="12" />
-                        </svg>
-                      </div>
-                      <p className="text-xs font-bold text-indigo-400 uppercase tracking-widest">Get PDF / TXT</p>
-                    </div>
+                  {images[index] && (
+                    <div
+                      className="absolute inset-0 z-0 bg-cover bg-center opacity-40 group-hover/slot:opacity-60 transition-opacity"
+                      style={{ backgroundImage: `url(${images[index]})` }}
+                    />
                   )}
+                  <div className="relative z-10 w-full h-full flex flex-col items-center justify-center text-center">
+                    {slot.file ? (
+                      <div className="flex flex-col items-center gap-4 text-center">
+                        <div className="w-16 h-20 bg-indigo-600 rounded-lg flex items-center justify-center text-white shadow-lg">
+                          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                            <polyline points="14 2 14 8 20 8" />
+                          </svg>
+                        </div>
+                        <div>
+                          <p className="font-bold text-indigo-900 truncate max-w-[200px]">{slot.subject || slot.file?.name}</p>
+                          <p className="text-[10px] text-indigo-400 font-bold uppercase tracking-wider">{slot.subject ? "Subject Active" : "Note Active"}</p>
+                          {slot.subject && <p className="text-[8px] text-black/20 mt-1 truncate max-w-[150px]">Latest: {slot.file?.name}</p>}
+                        </div>
 
-                  {/* Analyzing Overlay */}
-                  {slot.isAnalyzing && (
-                    <div className="absolute inset-0 bg-white/90 flex flex-col items-center justify-center p-8 text-center z-30">
-                      <motion.div
-                        animate={{ rotate: 360 }}
-                        transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
-                        className="w-10 h-10 border-2 border-indigo-600 border-t-transparent rounded-full mb-4"
-                      />
-                      <p className="text-xs font-bold text-indigo-600 uppercase tracking-widest animate-pulse">AI Reading Note...</p>
-                    </div>
-                  )}
+                        {/* Citations Animation */}
+                        <AnimatePresence>
+                          {slot.citations.map((cite, cIdx) => (
+                            <motion.div
+                              key={`${index}-${cIdx}`}
+                              initial={{ opacity: 0, scale: 0, x: 0, y: 0 }}
+                              animate={{
+                                opacity: [0, 1, 1, 0],
+                                scale: [0.5, 1, 1, 0.8],
+                                x: (Math.random() - 0.5) * 300,
+                                y: -100 - Math.random() * 200,
+                              }}
+                              transition={{
+                                duration: 4,
+                                delay: cIdx * 0.5,
+                                repeat: Infinity,
+                                repeatDelay: 1
+                              }}
+                              className="absolute pointer-events-none bg-white p-3 rounded-xl border border-indigo-100 shadow-2xl text-[10px] font-medium text-indigo-700 max-w-[150px] leading-tight z-50 text-left"
+                            >
+                              <span className="block mb-1 text-red-500 font-bold tracking-widest text-[8px]">CITATION</span>
+                              &ldquo;{cite.length > 60 ? cite.substring(0, 60) + "..." : cite}&rdquo;
+                            </motion.div>
+                          ))}
+                        </AnimatePresence>
+                      </div>
+                    ) : (
+                      <div className="flex flex-col items-center gap-4 group-hover/slot:scale-110 transition-transform">
+                        <div className="w-16 h-16 rounded-2xl bg-indigo-50 border-2 border-dashed border-indigo-200 flex items-center justify-center text-indigo-300">
+                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                            <line x1="12" y1="5" x2="12" y2="19" />
+                            <line x1="5" y1="12" x2="19" y2="12" />
+                          </svg>
+                        </div>
+                        <p className="text-xs font-bold text-indigo-400 uppercase tracking-widest">Get PDF / TXT</p>
+                      </div>
+                    )}
+
+                    {/* Analyzing Overlay */}
+                    {slot.isAnalyzing && (
+                      <div className="absolute inset-0 bg-white/90 flex flex-col items-center justify-center p-8 text-center z-30">
+                        <motion.div
+                          animate={{ rotate: 360 }}
+                          transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
+                          className="w-10 h-10 border-2 border-indigo-600 border-t-transparent rounded-full mb-4"
+                        />
+                        <p className="text-xs font-bold text-indigo-600 uppercase tracking-widest animate-pulse">AI Reading Note...</p>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </motion.div>
             );
