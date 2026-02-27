@@ -12,6 +12,7 @@ import {
   DoodleLightbulb,
 } from "@/components/ui/doodle-elements";
 import { ImagesBadge } from "@/components/ui/images-badge";
+import { SmoothCursor } from "@/components/ui/smooth-cursor"
 
 const COLORS = {
   red: "#ef4444",
@@ -71,6 +72,7 @@ export default function Home() {
       className="relative h-screen w-screen overflow-hidden flex flex-col items-center justify-center bg-white"
       style={{ fontFamily: "'DM Sans', sans-serif" }}
     >
+      <SmoothCursor />
       {/* ===== BUBBLE MENU NAVBAR ===== */}
       <BubbleMenu
         logo={
@@ -246,11 +248,32 @@ export default function Home() {
 
       {/* ===== BOOK AT BOTTOM CENTER ===== */}
       <motion.div
-        className="absolute bottom-0 left-1/2 -translate-x-1/2 z-20"
+        className="absolute bottom-0 left-1/2 -translate-x-1/2 z-20 group"
+        whileHover="hovered"
         initial={{ opacity: 0, y: 150 }}
         animate={{ opacity: 1, y: 100 }}
         transition={{ delay: 1, duration: 1.5, type: "spring", stiffness: 80 }}
       >
+        {/* Floating Hint Dialogue */}
+        <motion.div
+          className="absolute -top-5 left-1/2 -translate-x-1/2 w-48 bg-white p-4 rounded-2xl shadow-2xl border border-black/5 flex flex-col items-center text-center pointer-events-none z-30"
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: [0, -15, 0], opacity: 1 }}
+          variants={{
+            hovered: { opacity: 0, scale: 0.9, transition: { duration: 0.2 } }
+          }}
+          transition={{
+            y: { repeat: Infinity, duration: 4, ease: "easeInOut" },
+            opacity: { duration: 1, delay: 2 },
+            scale: { duration: 0.2 }
+          }}
+        >
+          <div className="text-[10px] font-black tracking-widest text-indigo-600 mb-1 uppercase">Step 1</div>
+          <p className="text-[11px] font-bold text-black/60 leading-tight">Hover to peek into your study materials</p>
+          {/* Small Speech Bubble Tail */}
+          <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-white rotate-45 border-r border-b border-black/5" />
+        </motion.div>
+
         <ImagesBadge
           coverImage="/bookie.png"
           text="GEOGRAPHY NOTES"
