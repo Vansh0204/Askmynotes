@@ -99,7 +99,7 @@ export default function ChatPage() {
 
     const fetchSessions = useCallback(async () => {
         try {
-            const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5003";
+            const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://askmynotes-mavericks.onrender.com";
             const response = await fetch(`${apiUrl}/api/chat/sessions`);
             if (response.ok) {
                 const data = await response.json();
@@ -159,7 +159,7 @@ export default function ChatPage() {
                 ? `Researching specifically about "${selectedTopic}": ${textToSend}`
                 : textToSend;
 
-            const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5003";
+            const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://askmynotes-mavericks.onrender.com";
             const response = await fetch(`${apiUrl}/api/chat`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -204,7 +204,7 @@ export default function ChatPage() {
     const deleteSession = async (id: string, e: React.MouseEvent) => {
         e.stopPropagation();
         try {
-            const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5003";
+            const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://askmynotes-mavericks.onrender.com";
             const res = await fetch(`${apiUrl}/api/chat/sessions/${id}`, { method: "DELETE" });
             if (res.ok) {
                 setSessions(prev => prev.filter(s => s.id !== id));
