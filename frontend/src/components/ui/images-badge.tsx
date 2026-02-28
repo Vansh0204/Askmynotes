@@ -104,7 +104,7 @@ export function NotesVisualizer({
 
       try {
         const apiUrl = "https://askmynotes-mavericks.onrender.com";
-        const response = await fetch(`${apiUrl}/api/upload/notes`, {
+        const response = await fetch(`${apiUrl}/api/upload`, {
           method: "POST",
           body: formData,
         });
