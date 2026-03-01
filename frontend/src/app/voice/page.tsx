@@ -89,8 +89,19 @@ export default function VoicePage() {
             if (!response.ok) throw new Error("Chat failed");
 
             const result = await response.json();
-            setAiResponse(result.answer);
-            speak(result.answer);
+
+            // Filter out HTML tags, markdown, and citations for cleaner voice UI and speech
+            const cleanedResponse = (result.answer || "")
+                .replace(/<\/?u>/g, "") // Remove <u> and </u> tags
+                .replace(/\(\s*(?:File|Source)\s*:.*?\)/gi, "") // Remove (File: ...) citations
+                .replace(/\[\s*(?:File|Source)\s*:.*?\]/gi, "") // Remove [File: ...] citations
+                .replace(/\[\d+\]/g, "") // Remove [1], [2] etc.
+                .replace(/\*\*|__/g, "") // Remove bold markdown if any
+                .replace(/\s+/g, " ") // Normalize extra whitespace caused by removals
+                .trim();
+
+            setAiResponse(cleanedResponse);
+            speak(cleanedResponse);
         } catch {
             const errMsg = "I'm sorry, I'm having trouble connecting to my knowledge base.";
             setAiResponse(errMsg);
